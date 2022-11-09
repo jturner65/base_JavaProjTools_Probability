@@ -343,24 +343,6 @@ public abstract class baseProbExpMgr {
 	
 	public abstract void drawExp();	
 	
-	/////////////////////////////
-	// utility : time stamp; display messages; state flags
-	
-	//get time from "start time" (ctor run for map manager)
-	protected long getCurTime() {			
-		Instant instant = Instant.now();
-		return instant.toEpochMilli() - expMgrBuiltTime;//milliseconds since 1/1/1970, subtracting when mapmgr was built to keep millis low		
-	}//getCurTime() 	
-	//returns a positive int value in millis of current world time since sim start
-	protected long getCurRunTimeForProc() {	return getCurTime() - curProcStartTime;}	
-	protected String getTimeStrFromProcStart() {return  getTimeStrFromPassedMillis(getCurRunTimeForProc());}
-	//get a decent display of passed milliseconds elapsed
-	//	long msElapsed = getCurRunTimeForProc();
-	protected String getTimeStrFromPassedMillis(long msElapsed) {
-		long ms = msElapsed % 1000, sec = (msElapsed / 1000) % 60, min = (msElapsed / 60000) % 60, hr = (msElapsed / 3600000) % 24;	
-		String res = String.format("%02d:%02d:%02d.%03d", hr, min, sec, ms);
-		return res;
-	}//getTimeStrFromPassedMillis	
 	
 	///////////////////////////
 	// end message display functionality
