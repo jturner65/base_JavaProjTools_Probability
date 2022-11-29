@@ -13,17 +13,29 @@ import base_ProbTools.randGenFunc.gens.myBoundedRandGen;
 import base_ProbTools.randGenFunc.gens.myFleishUniVarRandGen;
 import base_ProbTools.randGenFunc.gens.myZigRandGen;
 import base_ProbTools.randGenFunc.gens.base.myRandGen;
+import base_Utils_Objects.dataAdapter.Base_UIDataUpdater;
 import base_Utils_Objects.io.messaging.MessageObject;
 
 public abstract class baseProbExpMgr {
-	//handle communicating via console or logs
+	/**
+	 * handle communicating via console or logs
+	 */
 	public MessageObject msgObj;
+	
+	/**
+	 * Data adapter that receives and sends UI-sourced data with the window that owns this experiment
+	 */
+	protected Base_UIDataUpdater uiDataValues;
 	
 	////////////////////////////////////////
 	// gauss quadrature solver structures	
-	//integral solvers for gaussian quadrature method used by this experiment
+	/**
+	 * integral solvers for gaussian quadrature method used by this experiment
+	 */
 	protected baseQuadrature[] quadSlvrs;	
-	//types of solvers for comparison
+	/**
+	 * types of solvers for comparison
+	 */
 	public static final int
 		GL_QuadSlvrIDX 		= 0;			//gaussian legendre solver
 	public static final int numGaussSlvrs = 1;
@@ -41,7 +53,9 @@ public abstract class baseProbExpMgr {
 	////////////////////////////////////////
     // random var generators - take uniform input and return desired distribution
 	
-	//types of random number generators implemented/supported so far
+	/**
+	 * types of random number generators implemented/supported so far
+	 */
 	public static final int 
 		boundedRandGen			= 0,	//uses bounded pdf function (i.e. cosine)
 		ziggRandGen 			= 1,	//ziggurat method to generate distribution
@@ -52,7 +66,9 @@ public abstract class baseProbExpMgr {
 	//per algorithm type settings
     protected int[][] randAlgOptSettings;
     
-    //type of random variable function to use with zig or bounded rand gen algorithm
+    /**
+     * type of random variable function to use with zig or bounded rand gen algorithm
+     */
     public static final int
     	normRandVarIDX			= 0,
     	gaussRandVarIDX			= 1,
@@ -61,9 +77,13 @@ public abstract class baseProbExpMgr {
 		fleishRandVarIDX		= 4;
     //public static final String[] zigRandVarFuncNames = new String[] {"Normal Distribution", "Gaussian Distribution", "Cosine-PDF Distribution", "Cosine-PDF via sample-derived CDF"};
     	
-	//type of experiment to conduct
+	/**
+	 * type of experiment to conduct
+	 */
 	public static final String[] expType = new String[] {"Gaussian","Linear", "Uniform Spaced","Fleishman Poly","Raised Cosine PDF","Cosine CDF derived"};
-	//type of plots to show
+	/**
+	 * type of plots to show
+	 */
 	public static final String[] plotType = new String[] {"PDF", "Histogram","CDF (integral)","Inverse CDF"};
 	
   
@@ -90,8 +110,7 @@ public abstract class baseProbExpMgr {
 	protected float visScreenWidth;
 	
 	//current visible screen width and height, from owning window
-	protected float[] curVisScrDims;
-	
+	protected float[] curVisScrDims;	
 	
 	public baseProbExpMgr(MessageObject _msgObj, float[] _curVisScrDims) {
 		msgObj = _msgObj;
@@ -111,9 +130,32 @@ public abstract class baseProbExpMgr {
 		buildSolvers();
 		//initialize exp - in instance class
 		initExp();
-		
 	}//ctor
+	/**
+	 * Sets the initial uiDataValues UIDataUpdater from owner of experiment. This is used to pass values between experiment and UI. Builds a copy of the passed updater, appropriately cast
+	 */
+	protected abstract Base_UIDataUpdater initUIDataUpdater(Base_UIDataUpdater dataUpdate);
 	
+	/**
+	 * Sets new values for the UIDataUpdater. Should only be called if values have changed.
+	 * @param dataUpdate New data from UI or other data source
+	 */
+	public final void updateUIDataValues(Base_UIDataUpdater dataUpdate) {
+		if(uiDataValues == null) {
+			//set the Base_UIDataUpdater - in instance class. Should be a copy of owning window's UIDataUpdater, with all dta from dataUpdate
+			uiDataValues = initUIDataUpdater(dataUpdate);
+		} else {
+			uiDataValues.setAllVals(dataUpdate);
+		}
+		//instance-class specific handling of new data values
+		updateUIDataValues_Priv();
+	}
+	
+	/**
+	 * Instance-class specific handling of new UI data values, using this classe's uiDataValues variable
+	 */
+	protected abstract void updateUIDataValues_Priv();
+
 	/**
 	 * (re)init this experiment - specific functionality for each instance class
 	 */
@@ -136,7 +178,7 @@ public abstract class baseProbExpMgr {
 		quadSlvrs[GL_QuadSlvrIDX] = new myGaussLegenQuad(quadSlvrNames[GL_QuadSlvrIDX],numQuadPoints, quadConvTol, quadBDScale);
 		curQuadSolverIDX = 0;
 		//instance specific funcitionality
-		buildSolvers_indiv();
+		buildSolvers_Indiv();
 	}//buildSolvers
 	
 	/**
@@ -245,7 +287,7 @@ public abstract class baseProbExpMgr {
 		setVisWidth_Priv();
 	}//setVisibleScreenWidth
 	public float getVisibleSreenWidth() {return visScreenWidth;}
-	
+
 	//set the experiment-specific quantities dependent on visible width of the display area - use this to shrink visualizations if necessary
 	protected abstract void setVisWidth_Priv();
 	//check mouse over/click in 2d experiment; if btn == -1 then mouse over
@@ -255,7 +297,7 @@ public abstract class baseProbExpMgr {
 	//notify all exps that mouse has been released
 	public abstract void setMouseReleaseInExp2D();
 	//experiment instance-specific solver building funcitionality
-	protected abstract void buildSolvers_indiv();
+	protected abstract void buildSolvers_Indiv();
 
 
 	//sets which solver will be used for integration for this experiment
