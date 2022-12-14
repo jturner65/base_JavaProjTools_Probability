@@ -76,7 +76,12 @@ public abstract class myRandGen implements Comparable<myRandGen> {
     	long val = ThreadLocalRandom.current().nextLong();
     	return .5+ .5 * val/Long.MAX_VALUE;
     }
-    //uniformly between [min,max)
+    /**
+     * uniformly between [min,max)
+     * @param min
+     * @param max
+     * @return
+     */
     protected int getUniInt(int min, int max) {    	
     	return ThreadLocalRandom.current().nextInt(min,max);
     }
@@ -91,18 +96,42 @@ public abstract class myRandGen implements Comparable<myRandGen> {
     
     public abstract double[] getMultiSamples(int num);
     public abstract double[] getMultiFastSamples(int num);
-    //return a sample based on func  - momments defined by myRandVarFunc
+    /**
+     * return a sample based on func  - momments defined by myRandVarFunc
+     * @return
+     */
 	public abstract double getSample();
 	public abstract double getSampleFast();
-	//mapping to go from distribution to uniform 0->1 (from val -> prob p(X<= val))
+	/**
+	 * mapping to go from distribution to uniform 0->1 (from val -> prob p(X<= val))
+	 * @param _val
+	 * @return
+	 */
 	public abstract double CDF(double _val);
-	//mapping to go from uniform 0->1 to distribution (from p(X<= val) -> val) 
+	/**
+	 * mapping to go from uniform 0->1 to distribution (from p(X<= val) -> val) 
+	 * @param _val
+	 * @return
+	 */
 	public abstract double inverseCDF(double _val);
-	//alias for CDF
+	/**
+	 * alias for CDF
+	 * @param _val
+	 * @return
+	 */
 	public double distToUniform(double _val) {return CDF(_val);}
-	//alias for inverseCDF
+	/**
+	 * alias for inverseCDF
+	 * @param _val
+	 * @return
+	 */
 	public double uniformToDist(double _val) {return inverseCDF(_val);}
-	//test integral evaluation
+	/**
+	 * test integral evaluation
+	 * @param min
+	 * @param max
+	 * @return
+	 */
 	public double testInteg(double min, double max) {		return func.integral_f(min, max);	}
 	
 	@Override
@@ -199,16 +228,25 @@ public abstract class myRandGen implements Comparable<myRandGen> {
 		}
 	}//setFlag		
 	public boolean getFlag(int idx){int bitLoc = 1<<(idx%32);return (stFlags[idx/32] & bitLoc) == bitLoc;}	
-	//return string description of rand function
+	/**
+	 * return string description of rand function
+	 * @return
+	 */
 	public String getFuncDataStr() {return func.getFuncDataStr();}
 	
-	//get short string suitable for key for map
+	/**
+	 * get short string suitable for key for map
+	 * @return
+	 */
 	public String getTransformName() {
 		String res = name+"_"+ desc.quadName+"_" + func.getMinDescString();
 		return res;
 	}
 	
-	//get short display string
+	/**
+	 * get short display string
+	 * @return
+	 */
 	public String getDispTransName() {
 		return name +" "+summary.getMinNumMmntsDesc();
 	}

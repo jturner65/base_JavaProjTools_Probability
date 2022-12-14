@@ -27,7 +27,12 @@ public class myCosFunc extends baseRandVarFunc{
 		super(_quadSlvr, _summaryObj, "Cosine PDF");
 	}
 	
-	//this will calculate the freq val for a given std iteratively 
+	/**
+	 * this will calculate the freq val for a given std iteratively 
+	 * 
+	 * @param std
+	 * @return
+	 */
 	protected static double calcFreq(double std) {
 		//qStd is std @ stdFreqMultToUse
 		double stdArea = stdAreaAra[stdFreqMultToUse], twoPiStdArea = stdArea* twoPi;
@@ -66,7 +71,9 @@ public class myCosFunc extends baseRandVarFunc{
 	}//rebuildFuncs_Indiv
 	
 	@Override
-	//for plotting - return min and max vals to plot between
+	/**
+	 * for plotting - return min and max vals to plot between
+	 */
 	public double[] getPlotValBounds(int funcType) {
 		if(funcType==queryInvCDFIDX) {	return  new double[] {0.0,1.0};	}
 		//double mu = summary.mean(), std = summary.std();
