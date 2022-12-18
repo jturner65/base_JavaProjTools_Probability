@@ -7,7 +7,7 @@ import base_StatsTools.summary.myProbSummary_Dbls;
 
 /**
  * maps each grade to a specific location based on its order - does not care about original grade value, just uses rank
- * @author 7strb
+ * @author John Turner
  *
  */
 public class uniformCountTransform extends baseTransform{
