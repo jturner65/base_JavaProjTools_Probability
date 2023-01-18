@@ -31,7 +31,7 @@ public abstract class mySampleSet implements Comparable<mySampleSet> {
 	protected String curDistModel;
 
 	public mySampleSet( String _name) {
-		msgObj = MessageObject.buildMe();
+		if(null==msgObj) {msgObj = MessageObject.getInstance();}		
 		ObjID = IDCnt++;  name=_name;	
 		curDistModel = "";
 		baseDistModels = new HashMap<String, myRandGen>();
