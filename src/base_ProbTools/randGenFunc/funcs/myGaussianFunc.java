@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 import base_ProbTools.baseProbExpMgr;
 import base_ProbTools.quadrature.base.baseQuadrature;
-import base_ProbTools.randGenFunc.funcs.base.baseRandVarFunc;
+import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_StatsTools.summary.myProbSummary_Dbls;
 
 /**
@@ -13,7 +13,7 @@ import base_StatsTools.summary.myProbSummary_Dbls;
  * @author john
  *
  */
-public class myGaussianFunc extends baseRandVarFunc{	
+public class myGaussianFunc extends Base_RandVarFunc{	
 	//////////////////////////////
 	//zig algorithm fields for scaled normal - all myRandVarFuncs need their own impelemtnations of this map, independent of base class
 	//////////////////////////////
@@ -81,7 +81,7 @@ public class myGaussianFunc extends baseRandVarFunc{
 	@Override
 	public double integral_f(Double x1, Double x2) {
 		double res = 0;
-		if (!getFlag(quadSlvrSetIDX)) {	msgObj.dispWarningMessage("myGaussianFunc", "integral_f", "No quadrature solver has been set, so cannot integrate f");return res;}
+		if (!stFlags.getQuadSolverSet()) {	msgObj.dispWarningMessage("myGaussianFunc", "integral_f", "No quadrature solver has been set, so cannot integrate f");return res;}
 		//expMgr.dispInfoMessage("myGaussianFunc", "integral_f", "Integrating for : x1 : "+x1 + " and  x2 : " + x2);
 		
 		//if x1 is -inf... gauss-legendre quad - use error function via gaussian quad - calculating cdf
@@ -108,7 +108,7 @@ public class myGaussianFunc extends baseRandVarFunc{
 	@Override
 	public double integral_fStd(Double x1, Double x2) {
 		double res = 0;
-		if (!getFlag(quadSlvrSetIDX)) {	msgObj.dispWarningMessage("myGaussianFunc", "integral_fStd", "No quadrature solver has been set, so cannot integrate f");return res;}
+		if (!stFlags.getQuadSolverSet()) {	msgObj.dispWarningMessage("myGaussianFunc", "integral_fStd", "No quadrature solver has been set, so cannot integrate f");return res;}
 		//expMgr.dispInfoMessage("myGaussianFunc", "integral_f", "Integrating for : x1 : "+x1 + " and  x2 : " + x2);		
 		//if x1 is -inf... gauss-legendre quad - use error function via gaussian quad - calculating cdf
 		if(x1==Double.NEGATIVE_INFINITY) {				//cdf of x2 == .5 + .5 * error function x2/sqrt(2) 

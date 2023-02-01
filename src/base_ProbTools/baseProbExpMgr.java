@@ -8,11 +8,11 @@ import base_StatsTools.summary.myProbSummary_Dbls;
 import base_ProbTools.quadrature.myGaussLegenQuad;
 import base_ProbTools.quadrature.base.baseQuadrature;
 import base_ProbTools.randGenFunc.funcs.*;
-import base_ProbTools.randGenFunc.funcs.base.baseRandVarFunc;
+import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_ProbTools.randGenFunc.gens.myBoundedRandGen;
 import base_ProbTools.randGenFunc.gens.myFleishUniVarRandGen;
 import base_ProbTools.randGenFunc.gens.myZigRandGen;
-import base_ProbTools.randGenFunc.gens.base.myRandGen;
+import base_ProbTools.randGenFunc.gens.base.Base_RandGen;
 import base_Utils_Objects.dataAdapter.Base_UIDataUpdater;
 import base_Utils_Objects.io.messaging.MessageObject;
 
@@ -217,9 +217,9 @@ public abstract class baseProbExpMgr {
 		return res;
 	}//buildRandVarFuncOpts
 	
-	public baseRandVarFunc buildRandVarType (int _pdfType,  int _quadSlvrIdx, myProbSummary_Dbls _summaryObj) {
+	public Base_RandVarFunc buildRandVarType (int _pdfType,  int _quadSlvrIdx, myProbSummary_Dbls _summaryObj) {
 		//System.out.println("buildRandVarType : " + _pdfType);
-		baseRandVarFunc rvf;
+		Base_RandVarFunc rvf;
 		switch (_pdfType) {		
 		   	case normRandVarIDX			: { rvf = new myNormalFunc(quadSlvrs[_quadSlvrIdx]); 		   									break;}
 	    	case gaussRandVarIDX		: { rvf = new myGaussianFunc(quadSlvrs[_quadSlvrIdx], _summaryObj);	    					break;}
@@ -233,24 +233,24 @@ public abstract class baseProbExpMgr {
 	}//myRandVarFunc
 	
 	//using default GaussLengendre and 256 zig's for ziggurat alg
-	public myRandGen buildAndInitRandGen(int _type, int _pdfType, myProbSummary_Dbls _summaryObj) {return buildAndInitRandGen(_type, _pdfType, GL_QuadSlvrIDX, 256, _summaryObj);}
+	public Base_RandGen buildAndInitRandGen(int _type, int _pdfType, myProbSummary_Dbls _summaryObj) {return buildAndInitRandGen(_type, _pdfType, GL_QuadSlvrIDX, 256, _summaryObj);}
 	//must build rand gen through this method
-	public myRandGen buildAndInitRandGen(int _randGenType, int _pdfType, int _quadSlvrIdx, int _numZigRects, myProbSummary_Dbls _summaryObj) {
+	public Base_RandGen buildAndInitRandGen(int _randGenType, int _pdfType, int _quadSlvrIdx, int _numZigRects, myProbSummary_Dbls _summaryObj) {
 		
 		switch (_randGenType) {
 			case boundedRandGen : {
 				//need to build a random variable generator function
-				baseRandVarFunc func = buildRandVarType(_pdfType, _quadSlvrIdx, _summaryObj);				
+				Base_RandVarFunc func = buildRandVarType(_pdfType, _quadSlvrIdx, _summaryObj);				
 				return new myBoundedRandGen(func, randGenAlgNames[_randGenType]);}
 			case ziggRandGen : {//ziggurat alg solver - will use zigg algorithm to generate a gaussian of passed momments using a uniform source of RVs
 				//need to build a random variable generator function
-				baseRandVarFunc func = buildRandVarType(_pdfType, _quadSlvrIdx, _summaryObj);				
+				Base_RandVarFunc func = buildRandVarType(_pdfType, _quadSlvrIdx, _summaryObj);				
 				//_numZigRects must be pwr of 2 - is forced to be if is not.  Should be 256
 				return new myZigRandGen(func, _numZigRects, randGenAlgNames[_randGenType]);}
 			
 			case fleishRandGen_UniVar : {
 				//specify fleishman rand function with either moments or data - if only moments given, then need to provide hull as well
-				baseRandVarFunc func = buildRandVarType(_pdfType, _quadSlvrIdx, _summaryObj);		
+				Base_RandVarFunc func = buildRandVarType(_pdfType, _quadSlvrIdx, _summaryObj);		
 				return new myFleishUniVarRandGen(func,  randGenAlgNames[_randGenType]);	}
 
 			//these are just transformations and are not described by an underlying pdf
@@ -310,7 +310,7 @@ public abstract class baseProbExpMgr {
 	
 	//conduct a simple test on the passed random number generator - it will get a sample based on the pdf function given to generator
 	//uses 64 bit random uniform val
-	protected void smplTestRandNumGen(myRandGen gen, int numVals) {
+	protected void smplTestRandNumGen(Base_RandGen gen, int numVals) {
 		msgObj.dispInfoMessage("BaseProbExpMgr","testRandGen","Start synthesizing " + numVals+ " values using Gen : \n\t" + gen.getFuncDataStr());
 		double[] genVals = new double[numVals];
 		for(int i=0;i<genVals.length;++i) {	
@@ -325,7 +325,7 @@ public abstract class baseProbExpMgr {
 	
 	//conduct a simple test on the passed random number generator - it will get a sample based on the pdf function given to generator
 	//uses the "fast" implementation - 32 bit random uniform value
-	protected void smplTestFastRandNumGen(myRandGen gen, int numVals) {
+	protected void smplTestFastRandNumGen(Base_RandGen gen, int numVals) {
 		msgObj.dispInfoMessage("BaseProbExpMgr","testRandGen","Start synthesizing " + numVals+ " values using Gen : \n\t" + gen.getFuncDataStr());
 		double[] genVals = new double[numVals];
 		for(int i=0;i<genVals.length;++i) {	
@@ -343,7 +343,7 @@ public abstract class baseProbExpMgr {
 	@SuppressWarnings("unused")
 	public void testRCalc() {
 		msgObj.dispInfoMessage("BaseProbExpMgr","testRCalc","Start test of r var calc");
-		baseRandVarFunc randVar = new myNormalFunc(quadSlvrs[GL_QuadSlvrIDX]);
+		Base_RandVarFunc randVar = new myNormalFunc(quadSlvrs[GL_QuadSlvrIDX]);
 		myProbSummary_Dbls analysis = new myProbSummary_Dbls( new double[] {2.0, 3.0}, 2);
 		//myRandVarFunc randGaussVar = new myGaussianFunc(this, quadSlvrs[GL_QuadSlvrIDX], analysis);
 		randVar.dbgTestCalcRVal(256);		

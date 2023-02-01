@@ -2,12 +2,12 @@ package base_ProbTools.randGenFunc.funcs;
 
 import base_ProbTools.baseProbExpMgr;
 import base_ProbTools.quadrature.base.baseQuadrature;
-import base_ProbTools.randGenFunc.funcs.base.baseRandVarFunc;
+import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_StatsTools.summary.myProbSummary_Dbls;
 
 //class to model a pdf via a cosine
 //mean is phase, std is function of frequency
-public class myCosFunc extends baseRandVarFunc{
+public class myCosFunc extends Base_RandVarFunc{
 	//constants to modify cosine so that we represent desired moment behavior
 	//area under pdf from mean-> x*std corresponding to x val @ 0,1,2,3 - used to determine appropriate frequency values 
 	private static final double[] stdAreaAra = new double[] {0.0,0.3413447460685429485852 ,0.4772498680518207927997 , 0.4986501019683699054734};

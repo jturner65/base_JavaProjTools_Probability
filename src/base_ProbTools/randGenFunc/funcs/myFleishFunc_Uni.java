@@ -5,7 +5,7 @@ import org.jblas.Solve;
 
 import base_ProbTools.baseProbExpMgr;
 import base_ProbTools.quadrature.base.baseQuadrature;
-import base_ProbTools.randGenFunc.funcs.base.baseRandVarFunc;
+import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_ProbTools.randGenFunc.gens.myZigRandGen;
 import base_StatsTools.summary.myProbSummary_Dbls;
 
@@ -16,7 +16,7 @@ import base_StatsTools.summary.myProbSummary_Dbls;
  * @author john
  *
  */
-public class myFleishFunc_Uni extends baseRandVarFunc{
+public class myFleishFunc_Uni extends Base_RandVarFunc{
 	//polynomial coefficients
 	private double[] coeffs;
 	//quantities related to underlying cubic function
@@ -56,7 +56,7 @@ public class myFleishFunc_Uni extends baseRandVarFunc{
 		minMax2ndDerivs = calcQuadDerivRoots();
 		roots = calcAllRoots();		
 		//set summary builds functions - need to specify required elements before it is called 
-		if(getFlag(debugIDX)) {
+		if(stFlags.getIsDebug()) {
 			msgObj.dispInfoMessage("myFleishFunc_Uni", "rebuildFuncs_Indiv", "Roots calculated : ["+_getRootsStr() +"]");		
 		}
 	}//rebuildFunc
@@ -179,7 +179,7 @@ public class myFleishFunc_Uni extends baseRandVarFunc{
 		//[2][-] : 3rd deriv test for sign
 		//[3][-] : func eval for idx0 and idx1 pts - if this changes signs then cubic root lies between points, otherwise root lies 
 		//minMax2ndDerivs;
-		if(getFlag(debugIDX)) {_dispDerivRootsVals();}
+		if(stFlags.getIsDebug()) {_dispDerivRootsVals();}
 		int numRoots = 0;
 		if(discr < 0) {//1 real, 2 non-real complex-conjugate roots
 			msgObj.dispInfoMessage("myFleishFunc_Uni", "calcAllRoots", "Cubic Root calc : discr : " + String.format("%3.8f",discr) + " -> means 1 real and 2 non-real cmplx roots.");
@@ -341,9 +341,9 @@ public class myFleishFunc_Uni extends baseRandVarFunc{
 	            f = oldf;
 	            mult *=.5;
             }
-            if(getFlag(debugIDX)) {msgObj.dispInfoMessage("myFleishFunc_Uni", "newtonMethod", "Newton iters to find coeffs : " + i + " : final f : " +_getNewtonFStr(f));}
+            if(stFlags.getIsDebug()) {msgObj.dispInfoMessage("myFleishFunc_Uni", "newtonMethod", "Newton iters to find coeffs : " + i + " : final f : " +_getNewtonFStr(f));}
         }
-        if(getFlag(debugIDX)) {msgObj.dispInfoMessage("myFleishFunc_Uni", "newtonMethod", "Newton iters to find coeffs : " + i + " : final f : " +_getNewtonFStr(f));}
+        if(stFlags.getIsDebug()) {msgObj.dispInfoMessage("myFleishFunc_Uni", "newtonMethod", "Newton iters to find coeffs : " + i + " : final f : " +_getNewtonFStr(f));}
         return new double[] {b,c, d};
 	}//newton
 	
@@ -386,7 +386,7 @@ public class myFleishFunc_Uni extends baseRandVarFunc{
 			//diffSq = diff * diff;
 			if(Math.abs(diff) < convLim) {
 			//if(Math.abs(oldDiff) < Math.abs(diff)) {System.out.println("iter " + i + " DIVERGING! : diff : " + String.format("%3.8f", diff) + " | oldDiff : " + String.format("%3.8f", oldDiff));	}
-				if(getFlag(debugIDX)){
+				if(stFlags.getIsDebug()){
 					msgObj.dispInfoMessage("myFleishFunc_Uni", "calcInvF", "iter " + i + " diff : " + String.format("%3.8f", diff) + "\ty :"+ y + " res : " + String.format("%3.8f", res) + " f(res) : "+ String.format("%3.8f", fRes)+ " dfRes : "+ String.format("%3.8f", dfRes) + "| coeffs :["+_getCoeffsStr()+"]" );//+ "\t f'(res) : " + String.format("%3.8f", dfRes));}
 				}
 				break;

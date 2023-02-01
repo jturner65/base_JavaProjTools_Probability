@@ -1,14 +1,14 @@
 package base_ProbTools.randGenFunc.transform.base;
 
 import base_ProbTools.randGenFunc.randGenDesc;
-import base_ProbTools.randGenFunc.gens.base.myRandGen;
+import base_ProbTools.randGenFunc.gens.base.Base_RandGen;
 import base_StatsTools.summary.myProbSummary_Dbls;
 
 //////////////////////////////////
 //linear and uniform transformation classes
 //	these are just mappers and will not be used to synthesize random values
 
-public abstract class baseTransform extends myRandGen{
+public abstract class baseTransform extends Base_RandGen{
 	//func will be null for these, so all functionality that is dependent on func variable needs to be overridden
 	public baseTransform(String _name, myProbSummary_Dbls _summary) {
 		super(null, _name);
@@ -17,7 +17,7 @@ public abstract class baseTransform extends myRandGen{
 	//overrding base class verison to remove refs to func
 	@Override
 	protected final void initRandGen() {
-		setFlag(funcSetIDX, func!=null);
+		stFlags.setUseInSolver(func!=null);
 		funcName=  "No Rand Func for Transform " + name; 
 		desc = new randGenDesc("No Quad Solver", "No Rand Func", this);
 		//distVisObj = null;

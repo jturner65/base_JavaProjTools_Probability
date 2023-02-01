@@ -3,7 +3,7 @@ package base_ProbTools.randGenFunc.gens.base;
 import java.util.concurrent.ThreadLocalRandom;
 
 import base_ProbTools.randGenFunc.randGenDesc;
-import base_ProbTools.randGenFunc.funcs.base.baseRandVarFunc;
+import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_ProbTools.randGenFunc.gens.myBoundedRandGen;
 import base_StatsTools.summary.myProbSummary_Dbls;
 import base_StatsTools.visualization.myDistFuncHistVisMgr;
@@ -11,7 +11,7 @@ import base_StatsTools.visualization.myDistFuncHistVisMgr;
 /**
  * Provides generation of random variables from prob distributions given a uniform distribution
  */
-public abstract class myRandGen implements Comparable<myRandGen> {
+public abstract class Base_RandGen implements Comparable<Base_RandGen> {
 	public final int ObjID;
 	private static int IDCnt = 0;
 	//original data and analysis of it - fl polynomial needs to be built from a sample distribution or from a set of moments
@@ -23,27 +23,23 @@ public abstract class myRandGen implements Comparable<myRandGen> {
 	//descriptor of this random generator
 	public randGenDesc desc;		
 	//function this rand gen uses
-	protected final baseRandVarFunc func;	
+	protected final Base_RandVarFunc func;	
 	//visualization tool for this random generator
 	//protected myDistFuncHistVisMgr distVisObj; 
-		
+	
 	//state flags - bits in array holding relevant info about this random variable function
-	private int[] stFlags;						
-	public static final int
-			debugIDX 					= 0,
-			funcSetIDX					= 1;		//whether or not this random variable will be used in a ziggurat solver		
-	public static final int numFlags 	= 2;	
+	protected RandGenStateFlags stFlags;
    
-	public myRandGen(baseRandVarFunc _func, String _name) {
+	public Base_RandGen(Base_RandVarFunc _func, String _name) {
 		ObjID = IDCnt++;  
 		name=_name;
-		initFlags();
+		stFlags = new RandGenStateFlags(this);
 		func = _func;
 		initRandGen();
     }//ctor
 	//overriden by transforms
 	protected void initRandGen() {
-		setFlag(funcSetIDX, true);
+		stFlags.setUseInSolver(true);
 		funcName= func.name; 
 		desc = new randGenDesc(func.getQuadSolverName(), funcName, this);
 		//func built with summary data - allow for quick access
@@ -87,7 +83,7 @@ public abstract class myRandGen implements Comparable<myRandGen> {
     }
 	
     public myProbSummary_Dbls getSummary() {return summary;}
-    public baseRandVarFunc getFunc() {return func;}
+    public Base_RandVarFunc getFunc() {return func;}
 	public double getMean() {return summary.mean();}
 	public double getStd() {return summary.std();}
 	public double getVar() {return summary.var();}
@@ -135,7 +131,7 @@ public abstract class myRandGen implements Comparable<myRandGen> {
 	public double testInteg(double min, double max) {		return func.integral_f(min, max);	}
 	
 	@Override
-	public int compareTo(myRandGen othr) {return desc.compareTo(othr.desc);}
+	public int compareTo(Base_RandGen othr) {return desc.compareTo(othr.desc);}
 	
 	
 	//private final String[] dispMultiStrsConst = new String[] {"PDF hist",}; 
@@ -151,13 +147,13 @@ public abstract class myRandGen implements Comparable<myRandGen> {
 		//first build histogram
 		calcHistValsForDisp(distMdlViz, numVals, numBuckets);
 		//build and set pdf function values
-		func.buildFuncPlotVals(distMdlViz, numVals, low, high, baseRandVarFunc.queryPDFIDX);
+		func.buildFuncPlotVals(distMdlViz, numVals, low, high, Base_RandVarFunc.queryPDFIDX);
 		//now use passed cosGen but populate it into this object's distVisObj
-		cosGen.func.buildFuncPlotVals(distMdlViz, numVals, low, high, baseRandVarFunc.queryPDFIDX);
+		cosGen.func.buildFuncPlotVals(distMdlViz, numVals, low, high, Base_RandVarFunc.queryPDFIDX);
 		
 		String histName = funcName+" PDF hist",
-				gaussName = func.getDispFuncName(baseRandVarFunc.queryPDFIDX),
-				cosName = cosGen.func.getDispFuncName(baseRandVarFunc.queryPDFIDX);
+				gaussName = func.getDispFuncName(Base_RandVarFunc.queryPDFIDX),
+				cosName = cosGen.func.getDispFuncName(Base_RandVarFunc.queryPDFIDX);
 		
 		//get min and max histogram values and get min/max/diff y values for larger of two dists, either cosine or gauss
 		double[][] minMaxDiffHist = distMdlViz.getSpecificMinMaxDiff(histName),//use this for x values		
@@ -215,19 +211,15 @@ public abstract class myRandGen implements Comparable<myRandGen> {
 		
 		distMdlViz.setValuesHist(funcName+" PDF hist", new int[][] {new int[] {255,0,0,255}, new int[] {255,255,255,255}}, distBuckets, minMaxDiffXVals);
 	}//calcDistValsForDisp
-			
-	//state flag management
-	private void initFlags(){stFlags = new int[1 + numFlags/32]; for(int i = 0; i<numFlags; ++i){setFlag(i,false);}}
-	public void setAllFlags(int[] idxs, boolean val) {for (int idx : idxs) {setFlag(idx, val);}}
-	public void setFlag(int idx, boolean val){
-		int flIDX = idx/32, mask = 1<<(idx%32);
-		stFlags[flIDX] = (val ?  stFlags[flIDX] | mask : stFlags[flIDX] & ~mask);
-		switch (idx) {//special actions for each flag
-			case debugIDX : 		{break;}	
-			case funcSetIDX : 		{break;}	
-		}
-	}//setFlag		
-	public boolean getFlag(int idx){int bitLoc = 1<<(idx%32);return (stFlags[idx/32] & bitLoc) == bitLoc;}	
+		
+	/**
+	 * Debug mode functionality. Called from flags structure
+	 * @param val
+	 */
+	public void handleDebugMode(boolean val) {
+		//TODO	
+	}
+	
 	/**
 	 * return string description of rand function
 	 * @return

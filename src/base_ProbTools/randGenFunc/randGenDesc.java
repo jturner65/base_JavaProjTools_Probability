@@ -1,6 +1,6 @@
 package base_ProbTools.randGenFunc;
 
-import base_ProbTools.randGenFunc.gens.base.myRandGen;
+import base_ProbTools.randGenFunc.gens.base.Base_RandGen;
 
 /**
  * this class holds a description of a random number generator, including the momments and algorithms it uses
@@ -8,11 +8,11 @@ import base_ProbTools.randGenFunc.gens.base.myRandGen;
  */
 public class randGenDesc implements Comparable<randGenDesc>{
 	//owning rand gen
-	public final myRandGen randGen;
+	public final Base_RandGen randGen;
 	//names of quadrature algorithm and random number distribution name and algorithm name 
 	public final String quadName, distName, algName;
 	
-	public randGenDesc(String _quadName, String _distName, myRandGen _randGen) {
+	public randGenDesc(String _quadName, String _distName, Base_RandGen _randGen) {
 		quadName = _quadName; 
 		randGen = _randGen;		
 		distName = _distName;

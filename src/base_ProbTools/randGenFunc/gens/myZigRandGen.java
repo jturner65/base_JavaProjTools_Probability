@@ -1,15 +1,15 @@
 package base_ProbTools.randGenFunc.gens;
 
 import base_ProbTools.randGenFunc.zigConstVals;
-import base_ProbTools.randGenFunc.funcs.base.baseRandVarFunc;
-import base_ProbTools.randGenFunc.gens.base.myRandGen;
+import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
+import base_ProbTools.randGenFunc.gens.base.Base_RandGen;
 
 /**
  * implementation of ziggurat algorithm to build a distribution from a uniform sampling
  * @author john
  *
  */
-public class myZigRandGen extends myRandGen{
+public class myZigRandGen extends Base_RandGen{
 	//based on "An Improved Ziggurat Method to Generate Normal Random Samples";J. A. Doornik, 2005
 	//reference to ziggurat values used by this random variable generator
 	private zigConstVals zigVals;
@@ -17,7 +17,7 @@ public class myZigRandGen extends myRandGen{
 	private final int numZigRects, numZigIDXMask;
 	
 	//pass RV generating function
-	public myZigRandGen(baseRandVarFunc _func, int _numZigRects, String _name) {
+	public myZigRandGen(Base_RandVarFunc _func, int _numZigRects, String _name) {
 		super(_func, _name);
 		numZigRects=_numZigRects;
 		numZigIDXMask = numZigRects-1;
@@ -25,7 +25,7 @@ public class myZigRandGen extends myRandGen{
 		zigVals = func.zigVals;
 	}//ctor
 	
-	public myZigRandGen(baseRandVarFunc _func, String _name) {
+	public myZigRandGen(Base_RandVarFunc _func, String _name) {
 		super(_func, _name);
 		numZigRects=256;		//if not specified use 256
 		numZigIDXMask = numZigRects-1;

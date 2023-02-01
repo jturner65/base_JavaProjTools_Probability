@@ -18,7 +18,7 @@ import base_StatsTools.visualization.myDistFuncHistVisMgr;
  * @author john
  *
  */
-public abstract class baseRandVarFunc {
+public abstract class Base_RandVarFunc {
 	public static MessageObject msgObj;
 	//descriptive name of function
 	public final String name;	
@@ -29,16 +29,10 @@ public abstract class baseRandVarFunc {
 	//convergence limit for iterative calcs
 	public static final double convLim=1e-6;	
 	//state flags - bits in array holding relevant info about this random variable function
-	private int[] stFlags;						
-	public static final int
-			//whether to display debug info
-			debugIDX					= 0,
-			//whether to use zig alg for solving	
-			useZigAlgIDX				= 1,		//whether or not this random variable will be used in a ziggurat solver		
-			//quad solver set
-			quadSlvrSetIDX				= 2;		//whether quadrature solver has been set or not
-	public static final int numFlags 	= 3;	
-
+	
+	//state flags - bits in array holding relevant info about this random variable function
+	protected RandVarFuncStateFlags stFlags;
+	
 	//functional representation of pdfs and inv pdfs, and normalized @ 0 for ziggurat calc
 	protected Function<Double, Double>[] funcs;	
 	//function idxs
@@ -84,10 +78,10 @@ public abstract class baseRandVarFunc {
 	
 	public static final String[] queryFuncTypes = new String[] {"Function Eval", "PDF Eval", "CDF Eval", "Inv CDF Eval","Integral Eval"};	
 	
-	public baseRandVarFunc(baseQuadrature _quadSlvr, myProbSummary_Dbls _summaryObj, String _name) {
+	public Base_RandVarFunc(baseQuadrature _quadSlvr, myProbSummary_Dbls _summaryObj, String _name) {
 		if(null==msgObj) {msgObj = MessageObject.getInstance();}		
 		name=_name;
-		initFlags();
+		stFlags = new RandVarFuncStateFlags(this);
 		setQuadSolver(_quadSlvr);
 		rebuildFuncs(_summaryObj);
 	}//ctor
@@ -113,11 +107,11 @@ public abstract class baseRandVarFunc {
 	//set/get quadrature solver to be used to solve any integration for this RV func
 	public void setQuadSolver(baseQuadrature _quadSlvr) {
 		quadSlvr = _quadSlvr;
-		setFlag(quadSlvrSetIDX, quadSlvr!=null);
+		stFlags.setQuadSolverSet(quadSlvr!=null);
 	}//setSolver	
 	public baseQuadrature getQuadSolver() {return quadSlvr;}
 	public String getQuadSolverName() {
-		if (getFlag(quadSlvrSetIDX)) { return quadSlvr.name;}
+		if (stFlags.getQuadSolverSet()) { return quadSlvr.name;}
 		return "None Set";
 	}	
 	//momments
@@ -282,7 +276,7 @@ public abstract class baseRandVarFunc {
 	//if this rand var is going to be accessed via the ziggurat algorithm, this needs to be called w/# of rectangles to use
 	//this must be called after an Quad solver has been set, since finding R and Vol for passed # of ziggurats requires such a solver
 	public void setZigVals(int _nRect) {
-		if (!getFlag(quadSlvrSetIDX)) {	msgObj.dispWarningMessage("baseRandVarFunc", "setZigVals", "No quadrature solver has been set, so cannot set ziggurat values for "+_nRect+" rectangles (incl tail)."); return;}
+		if (!stFlags.getQuadSolverSet()) {	msgObj.dispWarningMessage("baseRandVarFunc", "setZigVals", "No quadrature solver has been set, so cannot set ziggurat values for "+_nRect+" rectangles (incl tail)."); return;}
 		double checkRect = Math.log(_nRect)/ln2;
 		int nRectCalc = (int)Math.pow(2.0, checkRect);//int drops all decimal values
 		if (_nRect != nRectCalc) {	
@@ -291,7 +285,7 @@ public abstract class baseRandVarFunc {
 			numZigRects = numRectToUse;
 		}		
 		zigVals = new zigConstVals(this,numZigRects);
-		setFlag(useZigAlgIDX, true);
+		stFlags.setUseZigSolver(true);
 	}//setZigVals
 	
 	//test if newton iteration is done
@@ -317,29 +311,24 @@ public abstract class baseRandVarFunc {
 		
 	}//dbgDispCDF
 
-	private void initFlags(){stFlags = new int[1 + numFlags/32]; for(int i = 0; i<numFlags; ++i){setFlag(i,false);}}
-	public void setAllFlags(int[] idxs, boolean val) {for (int idx : idxs) {setFlag(idx, val);}}
-	public void setFlag(int idx, boolean val){
-		int flIDX = idx/32, mask = 1<<(idx%32);
-		stFlags[flIDX] = (val ?  stFlags[flIDX] | mask : stFlags[flIDX] & ~mask);
-		switch (idx) {//special actions for each flag		
-			case debugIDX		: {break;}
-			case useZigAlgIDX 	: {break;}
-			case quadSlvrSetIDX	: {break;}
-		}
-	}//setFlag		
-	public boolean getFlag(int idx){int bitLoc = 1<<(idx%32);return (stFlags[idx/32] & bitLoc) == bitLoc;}	
+	/**
+	 * Debug mode functionality. Called only from flags structure
+	 * @param val
+	 */
+	public void handleDebugMode(boolean val) {
+		//TODO	
+	}
 	
 	/**
 	 * Whether or not to enter debug mode for this random variable
 	 * @param _dbg
 	 */
-	public void setDebugMode(boolean _dbg) {setFlag(debugIDX, _dbg);}
+	public void setDebugMode(boolean _dbg) {stFlags.setIsDebug(_dbg);}
 	
 	//describes data
 	public String getFuncDataStr(){
 		String res = "Type of distribution :  " + name +"|"+summary.getMoments();
-		if(getFlag(useZigAlgIDX)) {	res += "\n\tUsing Ziggurat Algorithm : " + zigVals.toString();}		
+		if(stFlags.getUseZigSolver()) {	res += "\n\tUsing Ziggurat Algorithm : " + zigVals.toString();}		
 		return res;
 	}//getFuncDataStr
 	

@@ -1,6 +1,6 @@
 package base_ProbTools.randGenFunc;
 
-import base_ProbTools.randGenFunc.funcs.base.baseRandVarFunc;
+import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 
 //class holding ziggurat pre-calced values (in tabular form) for a particular prob function and # of rectangles
 //this needs to have no memory so multiple functions can use it
@@ -11,7 +11,7 @@ public class zigConstVals{
 	//used to keep values between [0,1] in nextDouble
 	public static final double invLBitMask = 1.0/lBitMask, invBitMask = 1.0/bitMask;
 	//owning random variable function
-	private final baseRandVarFunc func;
+	private final Base_RandVarFunc func;
 	//Doornik's tables : Bottom reclangle has index 0 (but X_255 = R). X coordinates for equal area for each rectangle having same area; ratio of neighbors
 	public final double[] eqAreaZigX, eqAreaZigX_NNorm,eqAreaZigX_NNormFast;
 	//For faster nextGaussian(Random)   
@@ -29,7 +29,7 @@ public class zigConstVals{
 	public final double R_last, inv_R_last;
 		
 	//make sure all access to func's function and inv function use ziggurat versions - these have range 0->1
-	public zigConstVals(baseRandVarFunc _func, int _Nrect) {
+	public zigConstVals(Base_RandVarFunc _func, int _Nrect) {
 		func=_func;
 		Nrect = _Nrect;
 		double[] rValAndVol = calcRValAndVol();
@@ -75,7 +75,7 @@ public class zigConstVals{
 		double integralRes = func.integral_fStd(rVal, Double.POSITIVE_INFINITY);
 		double vol = rVal* funcAtR + integralRes;//Q func == 1 - CDF
 		if (vol < 0) {
-			baseRandVarFunc.msgObj.dispErrorMessage("zigConstVals", "z_R", func.getShortDesc()+ "| Initial Ziggurat R val chosen to be too high, causing integration to yield a negative volume due to error");
+			Base_RandVarFunc.msgObj.dispErrorMessage("zigConstVals", "z_R", func.getShortDesc()+ "| Initial Ziggurat R val chosen to be too high, causing integration to yield a negative volume due to error");
 			return new double[] {-rVal*9, 0};
 		}
 		//x values and functional eval of x vals

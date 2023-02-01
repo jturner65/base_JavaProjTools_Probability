@@ -3,7 +3,7 @@ package base_ProbTools.samples;
 import java.util.*;
 
 import base_ProbTools.randGenFunc.gens.myBoundedRandGen;
-import base_ProbTools.randGenFunc.gens.base.myRandGen;
+import base_ProbTools.randGenFunc.gens.base.Base_RandGen;
 import base_StatsTools.visualization.myDistFuncHistVisMgr;
 import base_Utils_Objects.io.messaging.MessageObject;
 
@@ -22,7 +22,7 @@ public abstract class mySampleSet implements Comparable<mySampleSet> {
 	/**
 	 * rand gen used to model underlying grade distribution for this class
 	 */
-	protected HashMap<String, myRandGen> baseDistModels;
+	protected HashMap<String, Base_RandGen> baseDistModels;
 	/**
 	 * map keyed by same value holding visualization tools
 	 */
@@ -34,12 +34,12 @@ public abstract class mySampleSet implements Comparable<mySampleSet> {
 		if(null==msgObj) {msgObj = MessageObject.getInstance();}		
 		ObjID = IDCnt++;  name=_name;	
 		curDistModel = "";
-		baseDistModels = new HashMap<String, myRandGen>();
+		baseDistModels = new HashMap<String, Base_RandGen>();
 		distModelVis = new HashMap<String, myDistFuncHistVisMgr>();
 	}//ctor
 	
 	//when new transform added, need to clear out existing transformed grades
-	public void setBaseDistModel(myRandGen _randGen) {
+	public void setBaseDistModel(Base_RandGen _randGen) {
 		curDistModel = _randGen.name;
 		baseDistModels.put(curDistModel, _randGen);
 		distModelVis.put(curDistModel, buildVisMgr(_randGen.name));
@@ -66,7 +66,7 @@ public abstract class mySampleSet implements Comparable<mySampleSet> {
 	////////////////////////////////////////
 	// underlying distribution config, evaluation and plotting functions
 	public void setRVFOptionFlags(int[][] _opts) {
-		myRandGen baseDistModel = baseDistModels.get(curDistModel);
+		Base_RandGen baseDistModel = baseDistModels.get(curDistModel);
 		if(baseDistModel != null) {baseDistModel.setOptionFlags(_opts);}}
 	
 	/**
@@ -78,7 +78,7 @@ public abstract class mySampleSet implements Comparable<mySampleSet> {
 	 */
 	public void evalCosAndNormWithHist(int numVals, int numBuckets, double low, double high) {
 		//we wish to build a histogram of current gaussian distribution, then we wish to superimpose the gaussian pdf curve over the histogram, and then superimpose the cosine pdf curve
-		myRandGen baseDistModel = baseDistModels.get(curDistModel);
+		Base_RandGen baseDistModel = baseDistModels.get(curDistModel);
 		myDistFuncHistVisMgr distMdlViz = distModelVis.get(curDistModel);
 		myBoundedRandGen cosGen = (myBoundedRandGen) baseDistModels.get("Bounded PDF Algorithm");
 		baseDistModel.buildFuncHistCosPlot(distMdlViz, numVals, numBuckets, low, high, cosGen);
@@ -87,7 +87,7 @@ public abstract class mySampleSet implements Comparable<mySampleSet> {
 	
 	
 	public void evalAndPlotFuncRes(int numVals, double low, double high, int funcType) {
-		myRandGen baseDistModel = baseDistModels.get(curDistModel);
+		Base_RandGen baseDistModel = baseDistModels.get(curDistModel);
 		myDistFuncHistVisMgr distMdlViz = distModelVis.get(curDistModel);
 		if(baseDistModel == null) {			
 			msgObj.dispWarningMessage("myClassRoster", "evalAndPlotFuncRes", "curDistModel has not been set/is null.  Aborting");	
@@ -95,7 +95,7 @@ public abstract class mySampleSet implements Comparable<mySampleSet> {
 		baseDistModel.calcFuncValsForDisp(distMdlViz, numVals, low, high, funcType);		
 	}
 	public void evalAndPlotHistRes(int numVals, int numBuckets) {
-		myRandGen baseDistModel = baseDistModels.get(curDistModel);
+		Base_RandGen baseDistModel = baseDistModels.get(curDistModel);
 		myDistFuncHistVisMgr distMdlViz = distModelVis.get(curDistModel);
 		if(baseDistModel == null) {			
 			msgObj.dispWarningMessage("myClassRoster", "evalAndPlotHistRes", "curDistModel has not been set/is null.  Aborting");	
