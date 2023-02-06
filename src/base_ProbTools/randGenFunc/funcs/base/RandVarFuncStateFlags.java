@@ -62,7 +62,7 @@ public class RandVarFuncStateFlags extends Base_BoolFlags {
 	protected void handleSettingDebug(boolean val) {owner.handleDebugMode(val);		}
 
 	@Override
-	protected void handleFlagSet_Indiv(int idx, boolean val) {
+	protected void handleFlagSet_Indiv(int idx, boolean val, boolean oldVal) {
 		switch (idx) {//special actions for each flag		
 			case useZigAlgIDX 	: {break;}
 			case quadSlvrSetIDX	: {break;}
