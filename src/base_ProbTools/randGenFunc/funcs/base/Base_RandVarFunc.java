@@ -304,7 +304,11 @@ public abstract class Base_RandVarFunc {
 		return tmpZigVals.calcRValAndVol();		
 	}//testCalcRVal
 	
-	//display results from cdf map of values, where key is cdf and value is value
+	/**
+	 * display results from cdf map of values, where key is cdf and value is value
+	 * @param map
+	 * @param callingClass
+	 */
 	protected void dbgDispCDF(TreeMap<Double,Double> map, String callingClass) {
 		msgObj.dispWarningMessage(callingClass,"dbgDispCDF","CDF Values : ");
 		for(Double key : map.keySet()) {msgObj.dispWarningMessage(callingClass,"dbgDispCDF","\tKey : " + key +" | CDF Val : " + map.get(key));}
@@ -315,7 +319,7 @@ public abstract class Base_RandVarFunc {
 	 * Debug mode functionality. Called only from flags structure
 	 * @param val
 	 */
-	public void handleDebugMode(boolean val) {
+	public final void handleRVStateFlagsDebugMode(boolean val) {
 		//TODO	
 	}
 	

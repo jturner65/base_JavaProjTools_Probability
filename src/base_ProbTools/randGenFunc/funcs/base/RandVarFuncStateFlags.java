@@ -59,7 +59,7 @@ public class RandVarFuncStateFlags extends Base_BoolFlags {
 	 * Set or clear debug functionality for flag owner
 	 */
 	@Override
-	protected void handleSettingDebug(boolean val) {owner.handleDebugMode(val);		}
+	protected void handleSettingDebug(boolean val) {owner.handleRVStateFlagsDebugMode(val);		}
 
 	@Override
 	protected void handleFlagSet_Indiv(int idx, boolean val, boolean oldVal) {

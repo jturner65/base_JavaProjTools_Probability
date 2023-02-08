@@ -216,7 +216,7 @@ public abstract class Base_RandGen implements Comparable<Base_RandGen> {
 	 * Debug mode functionality. Called from flags structure
 	 * @param val
 	 */
-	public void handleDebugMode(boolean val) {
+	public final void handleRandGenStateFlagsDebugMode(boolean val) {
 		//TODO	
 	}
 	

@@ -50,7 +50,7 @@ public class RandGenStateFlags extends Base_BoolFlags {
 
 	@Override
 	protected void handleSettingDebug(boolean val) {
-		owner.handleDebugMode(val);		
+		owner.handleRandGenStateFlagsDebugMode(val);		
 	}
 
 }//class RandGenStateFlags
