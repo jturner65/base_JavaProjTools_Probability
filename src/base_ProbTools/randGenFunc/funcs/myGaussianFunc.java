@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.function.Function;
 
 import base_ProbTools.baseProbExpMgr;
-import base_ProbTools.quadrature.base.baseQuadrature;
+import base_Math_Objects.quadrature.base.Base_Quadrature;
 import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_StatsTools.summary.myProbSummary_Dbls;
 
@@ -29,10 +29,10 @@ public class myGaussianFunc extends Base_RandVarFunc{
 	
     protected double gaussSclFact, meanStd, invStdSclFact;
     //summary object needs to exist before ctor is called
-	public myGaussianFunc(baseQuadrature _quadSlvr, myProbSummary_Dbls _summaryObj, String _name) {
+	public myGaussianFunc(Base_Quadrature _quadSlvr, myProbSummary_Dbls _summaryObj, String _name) {
 		super(_quadSlvr, _summaryObj, _name);	
 	}//ctor
-	public myGaussianFunc(baseQuadrature _quadSlvr, myProbSummary_Dbls _summaryObj) {this(_quadSlvr,  _summaryObj, "Gaussian");}
+	public myGaussianFunc(Base_Quadrature _quadSlvr, myProbSummary_Dbls _summaryObj) {this(_quadSlvr,  _summaryObj, "Gaussian");}
 	
 	//rebuild function with new summary object - establish instance-class specific requirements before rebuilding
 	@Override

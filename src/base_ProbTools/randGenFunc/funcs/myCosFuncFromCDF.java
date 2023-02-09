@@ -7,7 +7,7 @@ import org.jblas.DoubleMatrix;
 import org.jblas.Solve;
 
 import base_ProbTools.baseProbExpMgr;
-import base_ProbTools.quadrature.base.baseQuadrature;
+import base_Math_Objects.quadrature.base.Base_Quadrature;
 import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_StatsTools.summary.myProbSummary_Dbls;
 
@@ -33,7 +33,7 @@ public class myCosFuncFromCDF extends Base_RandVarFunc{
 		cdf1pSine = 0,
 		cdfXpSine = 1;
 	private static final int numSlvrFuncs = 2;
-	public myCosFuncFromCDF(baseQuadrature _quadSlvr, myProbSummary_Dbls _summaryObj) {
+	public myCosFuncFromCDF(Base_Quadrature _quadSlvr, myProbSummary_Dbls _summaryObj) {
 		super(_quadSlvr, _summaryObj, "Cosine PDF");
 		buildSlvrFuncs();		
 	}//ctor

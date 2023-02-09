@@ -4,7 +4,7 @@ import org.jblas.DoubleMatrix;
 import org.jblas.Solve;
 
 import base_ProbTools.baseProbExpMgr;
-import base_ProbTools.quadrature.base.baseQuadrature;
+import base_Math_Objects.quadrature.base.Base_Quadrature;
 import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_ProbTools.randGenFunc.gens.myZigRandGen;
 import base_StatsTools.summary.myProbSummary_Dbls;
@@ -39,7 +39,7 @@ public class myFleishFunc_Uni extends Base_RandVarFunc{
 	private myZigRandGen zigNormGen;
 	
 	
-	public myFleishFunc_Uni(baseQuadrature _quadSlvr, myProbSummary_Dbls _summaryObj, String _name) {
+	public myFleishFunc_Uni(Base_Quadrature _quadSlvr, myProbSummary_Dbls _summaryObj, String _name) {
 		super(_quadSlvr,_summaryObj, _name);		
 	}//ctor
 

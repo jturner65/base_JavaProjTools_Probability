@@ -2,14 +2,14 @@ package base_ProbTools.randGenFunc.funcs.base;
 
 import java.util.TreeMap;
 import java.util.function.Function;
-import base_Utils_Objects.io.messaging.MessageObject;
 
-import org.jblas.*;
+import org.jblas.DoubleMatrix;
 
-import base_ProbTools.quadrature.base.baseQuadrature;
+import base_Math_Objects.quadrature.base.Base_Quadrature;
 import base_ProbTools.randGenFunc.zigConstVals;
 import base_StatsTools.summary.myProbSummary_Dbls;
 import base_StatsTools.visualization.myDistFuncHistVisMgr;
+import base_Utils_Objects.io.messaging.MessageObject;
 
 /**
  * classes to provide the functionality of a random variable to be consumed by the random number generators.
@@ -23,7 +23,7 @@ public abstract class Base_RandVarFunc {
 	//descriptive name of function
 	public final String name;	
 	//quadrature solver for this random variable/function
-	protected baseQuadrature quadSlvr;	
+	protected Base_Quadrature quadSlvr;	
 	//object to hold descriptive values and statistics for this distribution, and any source data/samples, if they exist
 	protected myProbSummary_Dbls summary;	
 	//convergence limit for iterative calcs
@@ -78,7 +78,7 @@ public abstract class Base_RandVarFunc {
 	
 	public static final String[] queryFuncTypes = new String[] {"Function Eval", "PDF Eval", "CDF Eval", "Inv CDF Eval","Integral Eval"};	
 	
-	public Base_RandVarFunc(baseQuadrature _quadSlvr, myProbSummary_Dbls _summaryObj, String _name) {
+	public Base_RandVarFunc(Base_Quadrature _quadSlvr, myProbSummary_Dbls _summaryObj, String _name) {
 		if(null==msgObj) {msgObj = MessageObject.getInstance();}		
 		name=_name;
 		stFlags = new RandVarFuncStateFlags(this);
@@ -105,11 +105,11 @@ public abstract class Base_RandVarFunc {
 	public abstract int getRVFType();
 
 	//set/get quadrature solver to be used to solve any integration for this RV func
-	public void setQuadSolver(baseQuadrature _quadSlvr) {
+	public void setQuadSolver(Base_Quadrature _quadSlvr) {
 		quadSlvr = _quadSlvr;
 		stFlags.setQuadSolverSet(quadSlvr!=null);
 	}//setSolver	
-	public baseQuadrature getQuadSolver() {return quadSlvr;}
+	public Base_Quadrature getQuadSolver() {return quadSlvr;}
 	public String getQuadSolverName() {
 		if (stFlags.getQuadSolverSet()) { return quadSlvr.name;}
 		return "None Set";
@@ -117,7 +117,7 @@ public abstract class Base_RandVarFunc {
 	//momments
 	
 	public myProbSummary_Dbls getSummary() {return summary;}
-	public baseQuadrature getQuadSlvr() {return quadSlvr;}
+	public Base_Quadrature getQuadSlvr() {return quadSlvr;}
 	public double getMean() {return summary.mean();}
 	public double getStd() {return summary.std();}
 	public double getVar() {return summary.var();}

@@ -1,7 +1,7 @@
 package base_ProbTools.randGenFunc.funcs;
 
 import base_ProbTools.baseProbExpMgr;
-import base_ProbTools.quadrature.base.baseQuadrature;
+import base_Math_Objects.quadrature.base.Base_Quadrature;
 import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_StatsTools.summary.myProbSummary_Dbls;
 
@@ -23,7 +23,7 @@ public class myCosFunc extends Base_RandVarFunc{
 	//amplitude to maintain area == 1 under 1 period of cosine is actually freq/pi but we are using .5 + .5*cos, so make calc easier to use freq/2pi * ( 1 + cos)
 	private double halfAmpl;
 
-	public myCosFunc(baseQuadrature _quadSlvr, myProbSummary_Dbls _summaryObj) {
+	public myCosFunc(Base_Quadrature _quadSlvr, myProbSummary_Dbls _summaryObj) {
 		super(_quadSlvr, _summaryObj, "Cosine PDF");
 	}
 	

@@ -5,8 +5,8 @@ import java.util.*;
 
 import base_ProbTools.randGenFunc.transform.*;
 import base_StatsTools.summary.myProbSummary_Dbls;
-import base_ProbTools.quadrature.myGaussLegenQuad;
-import base_ProbTools.quadrature.base.baseQuadrature;
+import base_Math_Objects.quadrature.myGaussLegenQuad;
+import base_Math_Objects.quadrature.base.Base_Quadrature;
 import base_ProbTools.randGenFunc.funcs.*;
 import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_ProbTools.randGenFunc.gens.myBoundedRandGen;
@@ -32,7 +32,7 @@ public abstract class baseProbExpMgr {
 	/**
 	 * integral solvers for gaussian quadrature method used by this experiment
 	 */
-	protected baseQuadrature[] quadSlvrs;	
+	protected Base_Quadrature[] quadSlvrs;	
 	/**
 	 * types of solvers for comparison
 	 */
@@ -174,7 +174,7 @@ public abstract class baseProbExpMgr {
 	 */
 	private final void buildSolvers() {
 		//build quadrature solvers if not built already
-		quadSlvrs = new baseQuadrature[numGaussSlvrs];
+		quadSlvrs = new Base_Quadrature[numGaussSlvrs];
 		quadSlvrs[GL_QuadSlvrIDX] = new myGaussLegenQuad(quadSlvrNames[GL_QuadSlvrIDX],numQuadPoints, quadConvTol, quadBDScale);
 		curQuadSolverIDX = 0;
 		//instance specific funcitionality
