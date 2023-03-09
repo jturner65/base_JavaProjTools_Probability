@@ -13,7 +13,7 @@ import base_ProbTools.randGenFunc.gens.myBoundedRandGen;
 import base_ProbTools.randGenFunc.gens.myFleishUniVarRandGen;
 import base_ProbTools.randGenFunc.gens.myZigRandGen;
 import base_ProbTools.randGenFunc.gens.base.Base_RandGen;
-import base_Utils_Objects.dataAdapter.Base_UIDataUpdater;
+import base_Utils_Objects.dataAdapter.Base_DataAdapter;
 import base_Utils_Objects.io.messaging.MessageObject;
 
 public abstract class baseProbExpMgr {
@@ -25,7 +25,7 @@ public abstract class baseProbExpMgr {
 	/**
 	 * Data adapter that receives and sends UI-sourced data with the window that owns this experiment
 	 */
-	protected Base_UIDataUpdater uiDataValues;
+	protected Base_DataAdapter uiDataValues;
 	
 	////////////////////////////////////////
 	// gauss quadrature solver structures	
@@ -134,15 +134,15 @@ public abstract class baseProbExpMgr {
 	/**
 	 * Sets the initial uiDataValues UIDataUpdater from owner of experiment. This is used to pass values between experiment and UI. Builds a copy of the passed updater, appropriately cast
 	 */
-	protected abstract Base_UIDataUpdater initUIDataUpdater(Base_UIDataUpdater dataUpdate);
+	protected abstract Base_DataAdapter initUIDataUpdater(Base_DataAdapter dataUpdate);
 	
 	/**
 	 * Sets new values for the UIDataUpdater. Should only be called if values have changed.
 	 * @param dataUpdate New data from UI or other data source
 	 */
-	public final void updateUIDataValues(Base_UIDataUpdater dataUpdate) {
+	public final void updateUIDataValues(Base_DataAdapter dataUpdate) {
 		if(uiDataValues == null) {
-			//set the Base_UIDataUpdater - in instance class. Should be a copy of owning window's UIDataUpdater, with all dta from dataUpdate
+			//set the Base_DataAdapter - in instance class. Should be a copy of owning window's UIDataUpdater, with all dta from dataUpdate
 			uiDataValues = initUIDataUpdater(dataUpdate);
 		} else {
 			uiDataValues.setAllVals(dataUpdate);
