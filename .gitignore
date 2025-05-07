@@ -1,2 +1,3 @@
+bin
 
-bin/base_ProbTools/
+*.class
