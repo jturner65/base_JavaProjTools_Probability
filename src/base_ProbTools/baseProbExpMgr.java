@@ -110,7 +110,7 @@ public abstract class baseProbExpMgr {
 	protected float visScreenWidth;
 	
 	//current visible screen width and height, from owning window
-	protected float[] curVisScrDims;	
+	protected float[] curWinVisScrDims;	
 	
 	public baseProbExpMgr(MessageObject _msgObj, float[] _curVisScrDims) {
 		msgObj = _msgObj;
@@ -282,8 +282,8 @@ public abstract class baseProbExpMgr {
 	
 	//called whenever screen width changes due to showing/hiding the right side menu
 	public void setVisibleScreenDims(float[] _curVisScrDims) {
-		curVisScrDims = _curVisScrDims;
-		visScreenWidth = curVisScrDims[0];
+		curWinVisScrDims = _curVisScrDims;
+		visScreenWidth = curWinVisScrDims[0];
 		setVisWidth_Priv();
 	}//setVisibleScreenWidth
 	public float getVisibleSreenWidth() {return visScreenWidth;}
