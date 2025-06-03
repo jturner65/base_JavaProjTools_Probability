@@ -1,5 +1,6 @@
 package base_ProbTools.randGenFunc.gens;
 
+import base_Math_Objects.MyMathUtils;
 import base_ProbTools.randGenFunc.zigConstVals;
 import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_ProbTools.randGenFunc.gens.base.Base_RandGen;
@@ -138,8 +139,8 @@ public class myZigRandGen extends Base_RandGen{
 	private double nextNormal53() {
     	double x;
     	while (true) {
-			x = getFuncValFromLong(getNextLong());
-			if (x==x) {return x;    }		//Nan test -> NaN != NaN
+			x = getFuncValFromLong(MyMathUtils.randomLong());
+			if (x==x) {return x;    }		//Nan test -> NaN != NaN 
 			//else {System.out.println("Nan res : " + ++numNanRes);}
     	}
     }//nextNormal
@@ -150,7 +151,7 @@ public class myZigRandGen extends Base_RandGen{
     private double nextNormal32() {
     	double x;
     	while (true) {
-    		x = getFuncValFromInt(getNextInt());
+    		x = getFuncValFromInt(MyMathUtils.randomInt());
 			if (x==x) {return x;    }		//Nan test -> NaN != NaN
 			//else {System.out.println("Nan res : " + numNanRes++);}
     	}
@@ -163,7 +164,7 @@ public class myZigRandGen extends Base_RandGen{
     private double rareCase(int idx, double u) {
         double x = u * zigVals.eqAreaZigX[idx];
         //verify under curve
-        if (zigVals.rareCaseEqAreaX[idx+1] + (zigVals.rareCaseEqAreaX[idx] - zigVals.rareCaseEqAreaX[idx+1]) * getNextDouble() < func.fStd(x)) {          return x;    }
+        if (zigVals.rareCaseEqAreaX[idx+1] + (zigVals.rareCaseEqAreaX[idx] - zigVals.rareCaseEqAreaX[idx+1]) * MyMathUtils.randomDouble() < func.fStd(x)) {          return x;    }
         //overflowing when outside to cause re-samnple
         return Double.NaN;
     }
@@ -171,8 +172,9 @@ public class myZigRandGen extends Base_RandGen{
     private double bottomCase(boolean negSide) {        
         double x = -1.0, y = 0.0;
         while (-(y + y) < x * x) {
-            x = Math.log(getNextDouble()+zigConstVals.invLBitMask) * zigVals.inv_R_last;//adding zigConstVals.invLBitMask to avoid log of 0 - getNextDouble might possibly return a 0
-            y = Math.log(getNextDouble()+zigConstVals.invLBitMask);
+        	//adding zigConstVals.invLBitMask to avoid log of 0 - getNextDouble might possibly return a 0
+            x = Math.log(MyMathUtils.randomDouble()+zigConstVals.invLBitMask) * zigVals.inv_R_last;
+            y = Math.log(MyMathUtils.randomDouble()+zigConstVals.invLBitMask);
         } 
         return negSide ? x - zigVals.R_last : zigVals.R_last - x;
     }

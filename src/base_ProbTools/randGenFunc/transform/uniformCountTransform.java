@@ -2,6 +2,7 @@ package base_ProbTools.randGenFunc.transform;
 
 import java.util.TreeMap;
 
+import base_Math_Objects.MyMathUtils;
 import base_ProbTools.randGenFunc.transform.base.baseTransform;
 import base_StatsTools.summary.myProbSummary_Dbls;
 
@@ -53,7 +54,7 @@ public class uniformCountTransform extends baseTransform{
 	@Override
 	public double getSample() {	
 		if(count==0) {return 0;}
-		int rank = getUniInt(0,count);
+		int rank = MyMathUtils.randomInt(0,count);
 		double val = rank;//rankedGrades.get(rank);		
 		return val;}
 	@Override

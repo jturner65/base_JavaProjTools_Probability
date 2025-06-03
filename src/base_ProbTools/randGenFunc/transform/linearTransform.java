@@ -1,5 +1,6 @@
 package base_ProbTools.randGenFunc.transform;
 
+import base_Math_Objects.MyMathUtils;
 import base_ProbTools.randGenFunc.transform.base.baseTransform;
 import base_StatsTools.summary.myProbSummary_Dbls;
 
@@ -11,7 +12,7 @@ public class linearTransform extends baseTransform{
 	double min, max, diff;
 	//summary must have min and max
 	public linearTransform( myProbSummary_Dbls _summary) {
-		super( "Linear Transform Mapping", _summary);		
+		super("Linear Transform Mapping", _summary);		
 	}//ctor
 	//called whenever summary object is set/reset
 	@Override
@@ -42,7 +43,7 @@ public class linearTransform extends baseTransform{
 	@Override
 	public double[] getMultiFastSamples(int num) {return getMultiSamples(num);}
 	@Override
-	public double getSample() {	return getUniform01();}
+	public double getSample() {	return MyMathUtils.randomUniform01();}
 	@Override
 	public double getSampleFast() {return getSample();}
 

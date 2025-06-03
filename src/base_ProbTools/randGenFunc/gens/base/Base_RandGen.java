@@ -1,7 +1,5 @@
 package base_ProbTools.randGenFunc.gens.base;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 import base_ProbTools.randGenFunc.randGenDesc;
 import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_ProbTools.randGenFunc.gens.myBoundedRandGen;
@@ -63,24 +61,6 @@ public abstract class Base_RandGen implements Comparable<Base_RandGen> {
 	
 	//called whenever summary object is set/reset
 	public abstract void _setFuncSummaryIndiv();	
-
-    //thread-safe queries for uniform values
-    protected long getNextLong() {return ThreadLocalRandom.current().nextLong();}  
-    protected int getNextInt() {return ThreadLocalRandom.current().nextInt();  }
-    protected double getNextDouble() {return ThreadLocalRandom.current().nextDouble();}
-    protected double getUniform01() {
-    	long val = ThreadLocalRandom.current().nextLong();
-    	return .5+ .5 * val/Long.MAX_VALUE;
-    }
-    /**
-     * uniformly between [min,max)
-     * @param min
-     * @param max
-     * @return
-     */
-    protected int getUniInt(int min, int max) {    	
-    	return ThreadLocalRandom.current().nextInt(min,max);
-    }
 	
     public myProbSummary_Dbls getSummary() {return summary;}
     public Base_RandVarFunc getFunc() {return func;}

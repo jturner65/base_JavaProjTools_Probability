@@ -1,5 +1,6 @@
 package base_ProbTools.randGenFunc.gens;
 
+import base_Math_Objects.MyMathUtils;
 import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 import base_ProbTools.randGenFunc.gens.base.Base_RandGen;
 
@@ -49,7 +50,7 @@ public class myBoundedRandGen extends Base_RandGen{
 	
 	//get a random value based on cosine pdf
 	private double nextRandCosVal() {
-		double res = func.CDF_inv(getNextDouble());
+		double res = func.CDF_inv(MyMathUtils.randomDouble());
 		return res;		
 	}
 	

@@ -2,33 +2,58 @@ package base_ProbTools.randGenFunc;
 
 import base_ProbTools.randGenFunc.funcs.base.Base_RandVarFunc;
 
-//class holding ziggurat pre-calced values (in tabular form) for a particular prob function and # of rectangles
-//this needs to have no memory so multiple functions can use it
+/**
+ * class holding ziggurat pre-calced values (in tabular form) for a particular prob function and # of rectangles
+ * based loosely on "An Improved Ziggurat Method to Generate Normal Random Samples";J. A. Doornik, 2005
+ * this needs to have no memory so multiple functions can use it
+ */
 public class zigConstVals{
-	//based loosely on "An Improved Ziggurat Method to Generate Normal Random Samples";J. A. Doornik, 2005
 	//consts used often - masks
 	public static final Long lBitMask = (1L<<53), bitMask = (1L<<31);
-	//used to keep values between [0,1] in nextDouble
+	/**
+	 * used to keep values between [0,1] in nextDouble
+	 */
 	public static final double invLBitMask = 1.0/lBitMask, invBitMask = 1.0/bitMask;
-	//owning random variable function
+	/**
+	 * owning random variable function
+	 */
 	private final Base_RandVarFunc func;
-	//Doornik's tables : Bottom reclangle has index 0 (but X_255 = R). X coordinates for equal area for each rectangle having same area; ratio of neighbors
+	/**
+	 * Doornik's tables : Bottom reclangle has index 0 (but X_255 = R). 
+	 * X coordinates for equal area for each rectangle having same area; ratio of neighbors
+	 */
 	public final double[] eqAreaZigX, eqAreaZigX_NNorm,eqAreaZigX_NNormFast;
-	//For faster nextGaussian(Random)   
+	/**
+	 * For faster nextGaussian(Random)   
+	 */
 	public final long[] eqAreaZigRatio_NNorm;
-	///For faster nextGaussianFast(Random)
+	/**
+	 * For faster nextGaussianFast(Random)
+	 */
 	public final int[] eqAreaZigRatio_NNormFast;
-	//For faster rare cases.    
+	/**
+	 * For faster rare cases.    
+	 */
 	public final double[] rareCaseEqAreaX;
-	//specific values for this zig construct
-	//# of equal-volume rectangles + 1 for infinite tail of same volume
+	/**
+	 * specific values for this zig construct 
+	 * # of equal-volume rectangles + 1 for infinite tail of same volume
+	 */
 	public final int Nrect;
-	//volume of each ziggurat rectangle and tail
+	/**
+	 * volume of each ziggurat rectangle and tail
+	 */
 	public final double V_each;
-	//x coordinate of final rectangle, such that v_each == r(f(r)) + integral(r->inf) f(x) dx
+	/**
+	 * x coordinate of final rectangle, such that v_each == r(f(r)) + integral(r->inf) f(x) dx
+	 */
 	public final double R_last, inv_R_last;
 		
-	//make sure all access to func's function and inv function use ziggurat versions - these have range 0->1
+	/**
+	 * make sure all access to func's function and inv function use ziggurat versions - these have range 0->1
+	 * @param _func
+	 * @param _Nrect
+	 */
 	public zigConstVals(Base_RandVarFunc _func, int _Nrect) {
 		func=_func;
 		Nrect = _Nrect;
@@ -66,7 +91,11 @@ public class zigConstVals{
 		for (int i=0;i<rareCaseEqAreaX.length;++i) {       	rareCaseEqAreaX[i] = func.fStd(eqAreaZigX[i]); }    	
 	}//ctor
 	
-	//function described in zig paper to find appropriate r value - need to find r to make this funct == 0 
+	/**
+	 * function described in zig paper to find appropriate r value - need to find r to make this funct == 0 
+	 * @param rVal
+	 * @return
+	 */
 	private double[] z_R(double rVal) {
 		//func.msgObj.dispMessage("myGaussianFunc", "z_R", "Starting z_R with: rVal : " + rVal,true);
 		//this gives the volume at the tail - rectangle @ r + tail from r to end		
@@ -99,7 +128,10 @@ public class zigConstVals{
 	   
 	//3.6541528853610088; is value found for n == 256 
 	private static final double RValAndVolzTol = 0.00000000000001;
-	//x coordinate of final rectangle, such that v_each == r(f(r)) + integral(r->inf) f(x) dx
+	/**
+	 * x coordinate of final rectangle, such that v_each == r(f(r)) + integral(r->inf) f(x) dx
+	 * @return
+	 */
 	public double[] calcRValAndVol() {
 		//find an r that will make z_r function == 0
 		double rValGuess = 20;
@@ -136,6 +168,7 @@ public class zigConstVals{
 	
 	
 	//return important values for this ziggurat const struct
+	@Override
 	public String toString() {
 		String res = "Owning Func : " +func.getShortDesc()+" # Rects : " + Nrect + " R_Last : " + String.format("%3.16f", R_last) + " | Vol Per Zig : " + String.format("%3.16f", V_each) + "\n";
 		return res;	
