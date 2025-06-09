@@ -114,7 +114,7 @@ public abstract class Base_RandGen implements Comparable<Base_RandGen> {
 	public int compareTo(Base_RandGen othr) {return desc.compareTo(othr.desc);}
 	
 	
-	//private final String[] dispMultiStrsConst = new String[] {"PDF hist",}; 
+	//private final String[] dispMultiStrsConst = new String[]{"PDF hist",}; 
 	/**
 	 * build dist and hist and also take passed cosine randgen and superimpose the values for its pdf
 	 * @param numVals
@@ -145,7 +145,7 @@ public abstract class Base_RandGen implements Comparable<Base_RandGen> {
 		minMaxDiff[1][0] = (minMaxDiffCos[1][0] < minMaxDiffGauss[1][0]) ? minMaxDiffCos[1][0] : minMaxDiffGauss[1][0];
 		minMaxDiff[1][1] = (minMaxDiffCos[1][1] > minMaxDiffGauss[1][1]) ? minMaxDiffCos[1][1] : minMaxDiffGauss[1][1];
 		minMaxDiff[1][2] = minMaxDiff[1][1] - minMaxDiff[1][0];
-		String[] dispMultiStrs = new String[] {histName, gaussName, cosName};
+		String[] dispMultiStrs = new String[]{histName, gaussName, cosName};
 		distMdlViz.setCurMultiDispVis(dispMultiStrs,minMaxDiff);
 		distMdlViz.setColorVals(cosName,"stroke", new int[] {255,255,0,255});
 	}//buildFuncHistCosPlot

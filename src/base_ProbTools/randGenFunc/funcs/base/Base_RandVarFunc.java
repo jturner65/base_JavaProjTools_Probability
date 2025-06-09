@@ -76,7 +76,7 @@ public abstract class Base_RandVarFunc {
 		queryInvCDFIDX = 3,
 		queryIntegIDX = 4;
 	
-	public static final String[] queryFuncTypes = new String[] {"Function Eval", "PDF Eval", "CDF Eval", "Inv CDF Eval","Integral Eval"};	
+	public static final String[] queryFuncTypes = new String[]{"Function Eval", "PDF Eval", "CDF Eval", "Inv CDF Eval","Integral Eval"};	
 	
 	public Base_RandVarFunc(Base_Quadrature _quadSlvr, myProbSummary_Dbls _summaryObj, String _name) {
 		if(null==msgObj) {msgObj = MessageObject.getInstance();}		

@@ -39,7 +39,7 @@ public abstract class baseProbExpMgr {
 	public static final int
 		GL_QuadSlvrIDX 		= 0;			//gaussian legendre solver
 	public static final int numGaussSlvrs = 1;
-	public static final String[] quadSlvrNames = new String[] {"Gauss-Legendre"};
+	public static final String[] quadSlvrNames = new String[]{"Gauss-Legendre"};
 	
 	//index of current solver
 	protected int curQuadSolverIDX = 0;	
@@ -62,7 +62,7 @@ public abstract class baseProbExpMgr {
 		fleishRandGen_UniVar	= 2,	//uses fleishman algorithm for univariate - needs first 4 moments
 		linearTransformMap		= 3,	//just performs linear transformation mapping - does not actually represent a random function
 		uniformTransformMap		= 4;	//just performs an order-based transformation from original grade to #/n where # is order in rank (from lowest to highest) and n is total # of grades
-    public static final String[] randGenAlgNames = new String[] {"Bounded PDF Algorithm", "Ziggurat Algorithm", "Fleishman Univariate Polynomial Algorithm", "Linear Transformation Mapping", "Uniform Transformation Mapping"};
+    public static final String[] randGenAlgNames = new String[]{"Bounded PDF Algorithm", "Ziggurat Algorithm", "Fleishman Univariate Polynomial Algorithm", "Linear Transformation Mapping", "Uniform Transformation Mapping"};
 	//per algorithm type settings
     protected int[][] randAlgOptSettings;
     
@@ -75,16 +75,16 @@ public abstract class baseProbExpMgr {
     	raisedCosRandVarIDX		= 2,
 		cosCDFRandVarIDX 		= 3,
 		fleishRandVarIDX		= 4;
-    //public static final String[] zigRandVarFuncNames = new String[] {"Normal Distribution", "Gaussian Distribution", "Cosine-PDF Distribution", "Cosine-PDF via sample-derived CDF"};
+    //public static final String[] zigRandVarFuncNames = new String[]{"Normal Distribution", "Gaussian Distribution", "Cosine-PDF Distribution", "Cosine-PDF via sample-derived CDF"};
     	
 	/**
 	 * type of experiment to conduct
 	 */
-	public static final String[] expType = new String[] {"Gaussian","Linear", "Uniform Spaced","Fleishman Poly","Raised Cosine PDF","Cosine CDF derived"};
+	public static final String[] expType = new String[]{"Gaussian","Linear", "Uniform Spaced","Fleishman Poly","Raised Cosine PDF","Cosine CDF derived"};
 	/**
 	 * type of plots to show
 	 */
-	public static final String[] plotType = new String[] {"PDF", "Histogram","CDF (integral)","Inverse CDF"};
+	public static final String[] plotType = new String[]{"PDF", "Histogram","CDF (integral)","Inverse CDF"};
 	
   
 	////////////////////////////////////////
